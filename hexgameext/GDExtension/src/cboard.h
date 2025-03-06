@@ -37,7 +37,10 @@ public:
     CBoard();
     ~CBoard();
 
-    void set_width(int width);
-    int get_width() const;
+    void	set_width(int width);
+    int		get_width() const;
+    int		xyToIX(int x, int y) const;
+    void	put_color(int x, int y, byte col);
+    int		get_color(int x, int y) const;
 };
 

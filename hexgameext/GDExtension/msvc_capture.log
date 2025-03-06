@@ -1019,3 +1019,10 @@ cboard.cpp
 cboard.cpp
 cboard.cpp
    ���C�u���� bin\libgdcboard.windows.template_debug.x86_64.lib �ƃI�u�W�F�N�g bin\libgdcboard.windows.template_debug.x86_64.exp ���쐬��
+cboard.cpp
+register_types.cpp
+cboard.cpp
+cboard.cpp
+   ライブラリ bin\libgdcboard.windows.template_debug.x86_64.lib とオブジェクト bin\libgdcboard.windows.template_debug.x86_64.exp を作成中
+cboard.cpp
+   ライブラリ bin\libgdcboard.windows.template_debug.x86_64.lib とオブジェクト bin\libgdcboard.windows.template_debug.x86_64.exp を作成中
