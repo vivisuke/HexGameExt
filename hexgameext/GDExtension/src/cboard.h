@@ -41,7 +41,9 @@ public:
     void	set_width(int width);
     int		get_width() const;
     int		xyToIndex(int x, int y) const;
-    void	put_color(int x, int y, byte col);
     int		get_color(int x, int y) const;
+    void	put_color(int x, int y, byte col);
+    int		get_ix_color(int ix) const;
+    void	put_ix_color(int ix, byte col);
 };
 
