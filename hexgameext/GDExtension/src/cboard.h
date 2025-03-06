@@ -26,7 +26,7 @@ class CBoard : public RefCounted
     int		m_ary_width;
     int		m_ary_height;
     int		m_ary_size;
-    std::vector<byte>	m_board;
+    std::vector<byte>	m_cells;
 
 protected:
     static void _bind_methods();

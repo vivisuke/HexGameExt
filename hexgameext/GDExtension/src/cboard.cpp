@@ -20,7 +20,7 @@ void CBoard::update_ary() {
 	m_ary_height = m_width + 2;
 	m_ary_size = m_ary_width * m_ary_height;
 
-	m_board.resize(m_ary_size);
+	m_cells.resize(m_ary_size);
 }
 
 void CBoard::set_width(int width) {
@@ -35,11 +35,11 @@ int CBoard::xyToIX(int x, int y) const {	//	x, y: [0, m_width)
 	return (y+1)*m_width + x;
 }
 void CBoard::put_color(int x, int y, byte col) {
-	m_board[xyToIX(x, y)] = col;
+	m_cells[xyToIX(x, y)] = col;
 }
 int CBoard::get_color(int x, int y) const
 {
-	return m_board[xyToIX(x, y)];
+	return m_cells[xyToIX(x, y)];
 }
 
 void CBoard::_bind_methods()

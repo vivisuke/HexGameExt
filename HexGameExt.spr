@@ -7,6 +7,6 @@
 0005 ◎ C 03/06 03/06 0.001│ToDo│CBoard：盤面用１次元配列確保
 0006 ◎ C 03/06 03/06 0.001│ToDo│CBoard::get_color(x, y), put_color(x, y, col)
 0007 ● C 03/06            │ToDo│CBoard：盤面・壁初期化
-0008 ● C 03/06            │ToDo│
+0008 ◎ C 03/06 03/06 0.001│ToDo│CBoard::m_borad → m_cells リネーム
 0009 ● C 03/06            │ToDo│
 0010 ● C 03/06            │ToDo│
