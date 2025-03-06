@@ -8,6 +8,13 @@
 #endif
 
 #include <godot_cpp/classes/ref.hpp>
+#include <vector>
+
+typedef unsigned char byte;
+
+enum {
+	EMPTY = 0, BLACK, WHITE,
+};
 
 using namespace godot;
 
@@ -15,15 +22,22 @@ class CBoard : public RefCounted
 {
     GDCLASS(CBoard, RefCounted);
 
-    int m_width;
+    int		m_width;
+    int		m_ary_width;
+    int		m_ary_height;
+    int		m_ary_size;
+    std::vector<byte>	m_board;
 
 protected:
     static void _bind_methods();
 
+    void	update_ary();
+
 public:
-    CBoard(int width = 3);
+    CBoard();
     ~CBoard();
 
+    void set_width(int width);
     int get_width() const;
 };
 
