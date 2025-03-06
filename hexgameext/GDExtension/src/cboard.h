@@ -13,7 +13,7 @@
 typedef unsigned char byte;
 
 enum {
-	EMPTY = 0, BLACK, WHITE,
+	EMPTY = 0, BLACK, WHITE, BWALL, WWALL,		//	上下：BWALL, 左右：WWALL
 };
 
 using namespace godot;
@@ -37,9 +37,10 @@ public:
     CBoard();
     ~CBoard();
 
+    void	init();
     void	set_width(int width);
     int		get_width() const;
-    int		xyToIX(int x, int y) const;
+    int		xyToIndex(int x, int y) const;
     void	put_color(int x, int y, byte col);
     int		get_color(int x, int y) const;
 };
