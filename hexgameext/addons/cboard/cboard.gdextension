@@ -1,0 +1,10 @@
+[configuration]
+
+entry_symbol = "cboard_library_init"
+compatibility_minimum = 4.1
+reloadable = true
+
+[libraries]
+
+windows.x86_64.debug = "res://GDExtension/bin/libgdcboard.windows.template_debug.x86_64.dll"
+windows.x86_64.release = "res://GDExtension/bin/libgdcboard.windows.template_release.x86_64.dll"
