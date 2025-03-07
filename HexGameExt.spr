@@ -10,9 +10,9 @@
 0008 ◎ C 03/06 03/06 0.001│ToDo│CBoard::m_borad → m_cells リネーム
 0009 ● C 03/06            │ToDo│CBoard::sel_move_random() : int
 0010 ◎ C 03/06 03/06 0.001│ToDo│CBoard::get_ix_color(ix), put_ix_color(ix, col)
-0011 ● C 03/06            │ToDo│盤面状態画面表示
+0011 ◎ C 03/06 03/08 0.001│ToDo│盤面状態画面表示
 0012 ◎ C 03/06 03/08 0.001│ToDo│CBoard：空欄数保持、get_n_empty()
-0013 ● C 03/06            │ToDo│GDScript の Board クラス追加
+0013 ◎ C 03/06 03/08 0.001│ToDo│GDScript の Board クラス追加
 0014 ● C 03/06            │ToDo│CBoard::put_ix_color(ix, col)：連結判定
 0015 ● C 03/06            │ToDo│
 0016 ● C 03/06            │ToDo│
