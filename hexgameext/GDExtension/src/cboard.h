@@ -26,6 +26,7 @@ class CBoard : public RefCounted
     int		m_ary_width;
     int		m_ary_height;
     int		m_ary_size;
+    int		m_n_empty;
     std::vector<byte>	m_cells;
 
 protected:
@@ -40,10 +41,12 @@ public:
     void	init();
     void	set_width(int width);
     int		get_width() const;
+    int		get_n_empty() const { return m_n_empty; }
     int		xyToIndex(int x, int y) const;
     int		get_color(int x, int y) const;
     void	put_color(int x, int y, byte col);
     int		get_ix_color(int ix) const;
     void	put_ix_color(int ix, byte col);
+    int		sel_move_random() const;
 };
 

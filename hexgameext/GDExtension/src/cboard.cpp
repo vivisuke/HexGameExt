@@ -26,6 +26,7 @@ void CBoard::update_ary() {
 }
 void CBoard::init() {
 	//m_seq_gid = 0;
+	m_n_empty = m_width * m_width;
 	for(int y = 0; y != m_width; ++y) {
 		auto ix = xyToIndex(0, y);
 		m_cells[ix-1] = WWALL;
@@ -51,12 +52,14 @@ int CBoard::get_color(int x, int y) const {
 	return m_cells[xyToIndex(x, y)];
 }
 void CBoard::put_color(int x, int y, byte col) {
-	m_cells[xyToIndex(x, y)] = col;
+	//m_cells[xyToIndex(x, y)] = col;
+	put_ix_color(xyToIndex(x, y), col);
 }
 int CBoard::get_ix_color(int ix) const {
 	return m_cells[ix];
 }
 void CBoard::put_ix_color(int ix, byte col) {
+	m_n_empty -= 1;
 	m_cells[ix] = col;
 }
 
@@ -64,6 +67,7 @@ void CBoard::_bind_methods()
 {
     ClassDB::bind_method(D_METHOD("set_width", "value"), &CBoard::set_width, DEFVAL(3));
     ClassDB::bind_method(D_METHOD("get_width"), &CBoard::get_width);
+    ClassDB::bind_method(D_METHOD("get_n_empty"), &CBoard::get_n_empty);
     ClassDB::bind_method(D_METHOD("xyToIndex", "value", "value"), &CBoard::xyToIndex, DEFVAL(0), DEFVAL(0));
     ClassDB::bind_method(D_METHOD("get_color", "value", "value"), &CBoard::get_color, DEFVAL(0), DEFVAL(0));
     ClassDB::bind_method(D_METHOD("put_color", "value", "value", "value"), &CBoard::put_color, DEFVAL(0), DEFVAL(0), DEFVAL(0));
