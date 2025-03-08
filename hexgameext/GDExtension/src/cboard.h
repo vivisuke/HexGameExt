@@ -10,7 +10,7 @@
 #include <godot_cpp/classes/ref.hpp>
 #include <vector>
 
-typedef unsigned char byte;
+typedef unsigned char uchar;
 
 enum {
 	EMPTY = 0, BLACK, WHITE, BWALL, WWALL,		//	上下：BWALL, 左右：WWALL
@@ -27,12 +27,22 @@ class CBoard : public RefCounted
     int		m_ary_height;
     int		m_ary_size;
     int		m_n_empty;
-    std::vector<byte>	m_cells;
+	uchar	m_seq_gid;
+	__int64		m_n_node;					//	末端ノード数
+    std::vector<uchar>	m_cells;
+	std::vector<uchar>	m_gid;				//	石グループID
+	std::vector<uchar>	m_gid_stack;
+	std::vector<int>	m_put_stack;		//	着手箇所
+	std::vector<int>	m_seq_stack;		//	for m_seq_gid
 
 protected:
     static void _bind_methods();
 
     void	update_ary();
+	void	update_gid(int ix, uchar col);
+	void	update_gid_sub(int ix, int ix2);
+	bool	find_horz(uchar id, int y);
+	bool	find_vert(uchar id, int x);
 
 public:
     CBoard();
@@ -44,9 +54,9 @@ public:
     int		get_n_empty() const { return m_n_empty; }
     int		xyToIndex(int x, int y) const;
     int		get_color(int x, int y) const;
-    void	put_color(int x, int y, byte col);
+    bool	put_color(int x, int y, uchar col);
     int		get_ix_color(int ix) const;
-    void	put_ix_color(int ix, byte col);
+    bool	put_ix_color(int ix, uchar col);
     int		sel_move_random() const;
 };
 

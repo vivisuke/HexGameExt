@@ -2,7 +2,6 @@ class_name Board
 extends Node
 
 enum {
-	#EMPTY = 0, BLACK, WHITE, BWALL, WWALL
 	EMPTY = 0, BLUE, RED, BWALL, WWALL
 }
 const N_HORZ = 7
