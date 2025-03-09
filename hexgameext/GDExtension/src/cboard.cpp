@@ -53,7 +53,7 @@ int CBoard::get_width() const
     return m_width;
 }
 int CBoard::xyToIndex(int x, int y) const {	//	x, y: [0, m_width)
-	return (y+1)*m_width + x;
+	return (y+1)*m_ary_width + x;
 }
 int CBoard::get_color(int x, int y) const {
 	return m_cells[xyToIndex(x, y)];
@@ -127,6 +127,7 @@ int CBoard::sel_move_random() const {
 
 void CBoard::_bind_methods()
 {
+    ClassDB::bind_method(D_METHOD("init"), &CBoard::init);
     ClassDB::bind_method(D_METHOD("set_width", "value"), &CBoard::set_width, DEFVAL(3));
     ClassDB::bind_method(D_METHOD("get_width"), &CBoard::get_width);
     ClassDB::bind_method(D_METHOD("get_n_empty"), &CBoard::get_n_empty);
