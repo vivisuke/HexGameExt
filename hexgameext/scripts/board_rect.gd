@@ -3,29 +3,35 @@ extends ColorRect
 #const WHITE_COL = Color("pink")
 const WHITE_COL = Color("#f00000")		# 赤系
 const BLACK_COL = Color("#6060ff")		# 青系
-const N_HORZ = Board.N_HORZ
-const N_VERT = Board.N_HORZ
+var N_HORZ = 3
+var N_VERT = 3
 var CELL_WD = self.size.x / (Board.N_HORZ+1)
 var X0 = CELL_WD
 var Y0 = CELL_WD
 var GRID_WD = CELL_WD * (Board.N_HORZ-1)
 var GRID_HT = CELL_WD * (Board.N_HORZ-1)
 
-var bd
+var bd			# C++ CBorad オブジェクト
+var gbd
 var put_pos = Vector2(-1, -1)
-var view_path = false			# bd.m_dist != 0 部分強調
+var view_path = false			# gbd.m_dist != 0 部分強調
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	#print("CELL_WD = ", CELL_WD)
-	for i in range(Board.N_HORZ):
-		add_axis_label(xyToPos(i, -1.0), "%c"%(0x61+i))
-		add_axis_label(xyToPos(-0.75, i), "%d"%(i+1))
 	pass # Replace with function body.
 func init():
 	put_pos = Vector2(-1, -1)
-	view_path = false			# bd.m_dist != 0 部分強調
-
+	view_path = false			# gbd.m_dist != 0 部分強調
+func set_width(wd):
+	N_HORZ = wd
+	N_VERT = wd
+	CELL_WD = self.size.x / (N_HORZ+1)
+	X0 = CELL_WD + 15
+	Y0 = CELL_WD + 15
+	GRID_WD = CELL_WD * (N_HORZ-1)
+	GRID_HT = CELL_WD * (N_HORZ-1)
+	queue_redraw()
 func xyToPos(x, y):
 	return Vector2(X0+CELL_WD*x, Y0+CELL_WD*y+CELL_WD*x/2.0)
 func vec2ToPos(vec2):
@@ -51,8 +57,11 @@ func draw_stone(x, y, b):
 	draw_circle(xyToPos(x, y), CELL_WD*0.4, col)
 	draw_circle(xyToPos(x, y), CELL_WD*0.4, Color.BLACK, false, 1.0, true)
 func _draw():
+	for i in range(N_HORZ):
+		add_axis_label(xyToPos(i, -1.0), "%c"%(0x61+i))
+		add_axis_label(xyToPos(-0.75, i), "%d"%(i+1))
 	#draw_rect(Rect2(X0, Y0, GRID_WD, GRID_HT), Color.BLACK, false, 3.0)
-	const BWD = Board.N_HORZ
+	var BWD = N_HORZ
 	for i in range(1, BWD-1):
 		var t = Y0 + i * CELL_WD
 		draw_line(xyToPos(0, i), xyToPos(N_HORZ-1, i), Color.BLACK)
@@ -77,7 +86,7 @@ func _draw():
 	# 石描画
 	for y in range(BWD):
 		for x in range(BWD):
-			var col = bd.get_col(x, y)
+			var col = bd.get_color(x, y)
 			if col != Board.EMPTY:
 				draw_stone(x, y, col == Board.BLUE)
 	# 着手箇所強調
@@ -90,7 +99,7 @@ func _draw():
 		for y in range(BWD):
 			for x in range(BWD):
 				var ix = bd.xyToIndex(x, y)
-				if bd.m_path[ix] != 0:
+				if gbd.m_path[ix] != 0:
 					var p = xyToPos(x, y)
 					#draw_circle(p, CELL_WD*0.1, Color.WHITE)
 					draw_rect(Rect2(p-Vector2(5, 5), Vector2(10, 10)), Color.WHITE)
