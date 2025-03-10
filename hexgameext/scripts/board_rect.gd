@@ -1,8 +1,10 @@
 extends ColorRect
 
 #const WHITE_COL = Color("pink")
-const WHITE_COL = Color("#f00000")		# 赤系
-const BLACK_COL = Color("#6060ff")		# 青系
+const WHITE_COL = Color.WHITE
+const BLACK_COL = Color.BLACK
+#const WHITE_COL = Color("#f00000")		# 赤系
+#const BLACK_COL = Color("#6060ff")		# 青系
 var N_HORZ = 3
 var N_VERT = 3
 var CELL_WD = self.size.x / (Board.N_HORZ+1)
@@ -74,11 +76,14 @@ func _draw():
 		#draw_line(Vector2(t, Y0+GRID_HT), Vector2(X0+GRID_WD, t), Color.BLACK)
 	draw_line(xyToPos(0, N_VERT-1), xyToPos(N_HORZ-1, 0), Color.BLACK)		# 主対角線
 	#draw_line(Vector2(X0, Y0+GRID_HT), Vector2(X0+GRID_WD, Y0), Color.BLACK)		# 主対角線
-	const FR_WD = 5.0
+	const FR_WD = 10.0
 	draw_line(xyToPos(0, 0), xyToPos(N_HORZ-1, 0), BLACK_COL, FR_WD)
 	draw_line(xyToPos(0, N_VERT-1), xyToPos(N_HORZ-1, N_VERT-1), BLACK_COL, FR_WD)
-	draw_line(xyToPos(0, 0), xyToPos(0, N_VERT-1), WHITE_COL, FR_WD)
-	draw_line(xyToPos(N_HORZ-1, 0), xyToPos(N_HORZ-1, N_VERT-1), WHITE_COL, FR_WD)
+	#draw_line(xyToPos(0, 0), xyToPos(0, N_VERT-1), WHITE_COL, FR_WD)
+	#draw_line(xyToPos(N_HORZ-1, 0), xyToPos(N_HORZ-1, N_VERT-1), WHITE_COL, FR_WD)
+	#draw_rect(Rect2())
+	draw_line(xyToPos(0, 0), xyToPos(0, N_VERT-1), BLACK_COL, 1)
+	draw_line(xyToPos(N_HORZ-1, 0), xyToPos(N_HORZ-1, N_VERT-1), BLACK_COL, 1)
 	#draw_stone(1, 0, true)
 	#draw_stone(1, 1, true)
 	#draw_stone(2, 0, false)

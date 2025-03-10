@@ -4,7 +4,7 @@ enum {
 	EMPTY = 0, BLUE, RED, BWALL, WWALL
 }
 
-var BD_WIDTH = 3
+var BD_WIDTH = 9
 var bd
 var gbd
 var next = Board.BLUE
@@ -23,6 +23,12 @@ func _ready() -> void:
 	#f = bd.put_color(0, 2, 1)
 	init_board()
 	print_board()
+	#
+	var ix = bd.sel_move_random()
+	bd.put_ix_color(ix, BLUE);
+	ix = bd.sel_move_random()
+	bd.put_ix_color(ix, RED);
+	$BoardRect.queue_redraw()
 func init_board():
 	game_over = false
 	next = Board.BLUE
