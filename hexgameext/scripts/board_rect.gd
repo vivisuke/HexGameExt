@@ -48,7 +48,7 @@ func posToXY(pos : Vector2):
 func add_axis_label(pos, txt):
 	var lbl = Label.new()
 	lbl.add_theme_color_override("font_color", Color.BLACK)
-	lbl.add_theme_font_size_override("font_size", 36)
+	lbl.add_theme_font_size_override("font_size", 30)
 	lbl.text = txt
 	lbl.position = pos + Vector2(-CELL_WD/10.0, 0)
 	add_child(lbl)
@@ -60,8 +60,8 @@ func draw_stone(x, y, b):
 	draw_circle(xyToPos(x, y), CELL_WD*0.4, Color.BLACK, false, 1.0, true)
 func _draw():
 	for i in range(N_HORZ):
-		add_axis_label(xyToPos(i, -1.0), "%c"%(0x61+i))
-		add_axis_label(xyToPos(-0.75, i), "%d"%(i+1))
+		add_axis_label(xyToPos(i, -1.0)-Vector2(0, 20), "%c"%(0x61+i))		# 上辺
+		add_axis_label(xyToPos(-0.75, i)-Vector2(10, 0), "%d"%(i+1))		# 左辺
 	#draw_rect(Rect2(X0, Y0, GRID_WD, GRID_HT), Color.BLACK, false, 3.0)
 	var BWD = N_HORZ
 	for i in range(1, BWD-1):

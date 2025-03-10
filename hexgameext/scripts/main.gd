@@ -28,6 +28,10 @@ func _ready() -> void:
 		var ix = bd.sel_move_random()
 		if( bd.put_ix_color(ix, next) ): break;
 		next = (BLACK + WHITE) - next;
+	if next == BLACK:
+		$MessLabel.text = "黒の勝ちです"
+	else:
+		$MessLabel.text = "白の勝ちです"
 	$BoardRect.queue_redraw()
 func init_board():
 	game_over = false
