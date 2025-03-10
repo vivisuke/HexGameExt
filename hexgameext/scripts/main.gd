@@ -1,13 +1,13 @@
 extends Node2D
 
 enum {
-	EMPTY = 0, BLUE, RED, BWALL, WWALL
+	EMPTY = 0, BLACK, WHITE, BWALL, WWALL
 }
 
 var BD_WIDTH = 9
 var bd
 var gbd
-var next = Board.BLUE
+var next = BLACK
 var game_over = false
 var move_hist : PackedVector3Array = []		# 着手履歴 for Undo、要素：(x, y, col)
 
@@ -24,14 +24,14 @@ func _ready() -> void:
 	init_board()
 	print_board()
 	#
-	var ix = bd.sel_move_random()
-	bd.put_ix_color(ix, BLUE);
-	ix = bd.sel_move_random()
-	bd.put_ix_color(ix, RED);
+	while true:
+		var ix = bd.sel_move_random()
+		if( bd.put_ix_color(ix, next) ): break;
+		next = (BLACK + WHITE) - next;
 	$BoardRect.queue_redraw()
 func init_board():
 	game_over = false
-	next = Board.BLUE
+	next = BLACK
 	move_hist.clear()
 	bd.init()
 	$BoardRect.queue_redraw()
