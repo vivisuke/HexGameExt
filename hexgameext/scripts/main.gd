@@ -4,7 +4,7 @@ enum {
 	EMPTY = 0, BLACK, WHITE, BWALL, WWALL
 }
 
-var BD_WIDTH = 9
+var BD_WIDTH = 11
 var bd
 var gbd
 var next = BLACK
