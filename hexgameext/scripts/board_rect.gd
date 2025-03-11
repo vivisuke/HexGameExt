@@ -97,8 +97,8 @@ func _draw():
 	# 着手箇所強調
 	if put_pos.x >= 0:
 		var p = vec2ToPos(put_pos)
-		#draw_circle(p, CELL_WD*0.1, Color.WHITE)
-		draw_rect(Rect2(p-Vector2(5, 5), Vector2(10, 10)), Color.WHITE)
+		const R = 6
+		draw_rect(Rect2(p-Vector2(R, R), Vector2(2*R, 2*R)), Color.GREEN)
 	#
 	if view_path:
 		for y in range(BWD):

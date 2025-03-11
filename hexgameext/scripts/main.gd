@@ -65,6 +65,7 @@ func _input(event: InputEvent) -> void:
 		pass
 func do_put(xy: Vector2):
 	bd.put_color(xy.x, xy.y, next)
+	$BoardRect.put_pos = xy
 	$BoardRect.queue_redraw()
 	next = (BLACK + WHITE) - next;
 	print_next()
