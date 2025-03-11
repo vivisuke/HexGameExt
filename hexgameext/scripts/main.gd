@@ -12,8 +12,6 @@ var game_over = false
 var move_hist : PackedVector3Array = []		# 着手履歴 for Undo、要素：(x, y, col)
 
 func _ready() -> void:
-	#gbd = Board.new()
-	#$BoardRect.gbd = gbd
 	bd = CBoard.new()
 	bd.set_width(BD_WIDTH)
 	$BoardRect.bd = bd
@@ -42,10 +40,10 @@ func init_board():
 	bd.init()
 	$BoardRect.queue_redraw()
 func print_next():
-	if next == Board.BLUE:
-		$MessLabel.text = "青の手番です。"
+	if next == BLACK:
+		$MessLabel.text = "黒の手番です。"
 	else:
-		$MessLabel.text = "赤の手番です。"
+		$MessLabel.text = "白の手番です。"
 func print_board():
 	for y in range(BD_WIDTH):
 		var txt = ""
@@ -55,6 +53,7 @@ func print_board():
 	pass
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton && event.is_pressed():
+		if game_over: return
 		var pos = get_global_mouse_position() - $BoardRect.position
 		print("pos = ", pos)
 		var xy = $BoardRect.posToXY(pos)
@@ -64,8 +63,14 @@ func _input(event: InputEvent) -> void:
 				do_put(xy)
 		pass
 func do_put(xy: Vector2):
-	bd.put_color(xy.x, xy.y, next)
 	$BoardRect.put_pos = xy
+	if !bd.put_color(xy.x, xy.y, next):
+		next = (BLACK + WHITE) - next;
+		print_next()
+	else:	# 終局した場合
+		game_over = true
+		if next == BLACK:
+			$MessLabel.text = "黒の勝ちです。"
+		else:
+			$MessLabel.text = "白の勝ちです。"
 	$BoardRect.queue_redraw()
-	next = (BLACK + WHITE) - next;
-	print_next()
