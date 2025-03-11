@@ -29,6 +29,7 @@ void CBoard::update_ary() {
 	m_cells.resize(m_ary_size);
 	for(auto& v: m_cells) v = BWALL;
 	m_gid.resize(m_ary_size);
+	m_path.resize(m_ary_size);
 	init();
 }
 void CBoard::init() {
@@ -43,6 +44,7 @@ void CBoard::init() {
 		}
 	}
 	for(auto &v : m_gid) v = 0;
+	for(auto &v : m_path) v = 0;
 }
 void CBoard::set_width(int width) {
 	m_width = width;

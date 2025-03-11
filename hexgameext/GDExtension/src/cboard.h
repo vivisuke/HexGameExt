@@ -32,6 +32,7 @@ class CBoard : public RefCounted
     std::vector<uchar>	m_cells;
 	std::vector<uchar>	m_gid;				//	石グループID
 	std::vector<uchar>	m_gid_stack;
+	std::vector<uchar>	m_path;				//	要素：1以上ならば最短パス
 	std::vector<int>	m_put_stack;		//	着手箇所
 	std::vector<int>	m_seq_stack;		//	for m_seq_gid
 
