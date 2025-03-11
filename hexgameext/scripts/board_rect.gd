@@ -60,8 +60,8 @@ func draw_stone(x, y, b):
 	draw_circle(xyToPos(x, y), CELL_WD*0.4, Color.BLACK, false, 1.0, true)
 func _draw():
 	for i in range(N_HORZ):
-		add_axis_label(xyToPos(i, -1.5), "%c"%(0x61+i))		# 上辺
-		add_axis_label(xyToPos(-1.20, i), "%2d"%(i+1))		# 左辺
+		add_axis_label(xyToPos(i, -1.25)+Vector2(0, CELL_WD*(11-N_HORZ)/16), "%c"%(0x61+i))		# 上辺
+		add_axis_label(xyToPos(-1.15, i)+Vector2(CELL_WD*(11-N_HORZ)/16, CELL_WD/2), "%2d"%(i+1))		# 左辺
 	#draw_rect(Rect2(X0, Y0, GRID_WD, GRID_HT), Color.BLACK, false, 3.0)
 	var BWD = N_HORZ
 	for i in range(1, BWD-1):
