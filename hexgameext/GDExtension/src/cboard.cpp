@@ -4,6 +4,7 @@
 #include <godot_cpp/core/class_db.hpp>
 //#include <godot_cpp/classes/global_scope.hpp>
 #include <random>
+#include <iostream>
 
 using namespace godot;
 using namespace std;
@@ -15,6 +16,8 @@ std::mt19937 rgen(std::random_device{}()); // シードを設定
 CBoard::CBoard()
 	: m_width(3)
 {
+	//cout << "a CBoard Object is created." << endl;
+	UtilityFunctions::print("hello!");
 	update_ary();
 }
 

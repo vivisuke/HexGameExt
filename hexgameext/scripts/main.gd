@@ -4,7 +4,7 @@ enum {
 	EMPTY = 0, BLACK, WHITE, BWALL, WWALL
 }
 
-var BD_WIDTH = 11
+var BD_WIDTH = 3
 var ARY_WIDTH = BD_WIDTH + 1
 var bd
 var gbd
@@ -24,7 +24,7 @@ func _ready() -> void:
 	print_board()
 	print_next()
 	#
-	if true:
+	if false:
 		var ix
 		while true:
 			ix = bd.sel_move_random()
@@ -102,3 +102,22 @@ func do_put(xy: Vector2):
 		bd.get_shortest_path(next)
 		$BoardRect.view_path = true
 	$BoardRect.queue_redraw()
+
+
+func _on_next_button_pressed() -> void:
+	if game_over: return
+	var ix
+	if next == BLACK:
+		ix = bd.sel_move_random()
+		#pos = bd.sel_move_PMC(next)
+		#pos = bd.sel_move_MCTS(next)
+	else:
+		ix = bd.sel_move_random()
+		#pos = bd.sel_move_PMC(next)
+		#pos = bd.sel_move_MCTS(next)
+	var x = ix % ARY_WIDTH
+	var y = ix / ARY_WIDTH - 1
+	var pos : Vector2 = Vector2(x, y)
+	print("put pos = ", pos)
+	do_put(pos)
+	pass # Replace with function body.
