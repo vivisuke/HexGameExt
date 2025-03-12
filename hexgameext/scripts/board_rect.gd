@@ -95,19 +95,19 @@ func _draw():
 			if col != Board.EMPTY:
 				draw_stone(x, y, col == Board.BLUE)
 	# 着手箇所強調
+	const R = 6
 	if put_pos.x >= 0:
 		var p = vec2ToPos(put_pos)
-		const R = 6
 		draw_rect(Rect2(p-Vector2(R, R), Vector2(2*R, 2*R)), Color.GREEN)
-	#
+	# 連結パス強調
 	if view_path:
 		for y in range(BWD):
 			for x in range(BWD):
 				var ix = bd.xyToIndex(x, y)
-				if gbd.m_path[ix] != 0:
+				if bd.get_path(x, y) != 0:
 					var p = xyToPos(x, y)
 					#draw_circle(p, CELL_WD*0.1, Color.WHITE)
-					draw_rect(Rect2(p-Vector2(5, 5), Vector2(10, 10)), Color.WHITE)
+					draw_rect(Rect2(p-Vector2(R, R), Vector2(2*R, 2*R)), Color.GREEN)
 	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

@@ -4,7 +4,8 @@ enum {
 	EMPTY = 0, BLACK, WHITE, BWALL, WWALL
 }
 
-var BD_WIDTH = 3
+var BD_WIDTH = 11
+var ARY_WIDTH = BD_WIDTH + 1
 var bd
 var gbd
 var next = BLACK
@@ -23,15 +24,25 @@ func _ready() -> void:
 	print_board()
 	print_next()
 	#
-	if false:
+	if true:
+		var ix
 		while true:
-			var ix = bd.sel_move_random()
+			ix = bd.sel_move_random()
 			if( bd.put_ix_color(ix, next) ): break;
 			next = (BLACK + WHITE) - next;
+		game_over = true
 		if next == BLACK:
 			$MessLabel.text = "黒の勝ちです"
 		else:
 			$MessLabel.text = "白の勝ちです"
+		var x = ix % ARY_WIDTH
+		var y = ix / ARY_WIDTH - 1
+		print("x, y = %d, %d, next = %d"%[x, y, next])
+		bd.BFS(x, y)	# 幅優先探索：pos からの距離計算
+		bd.get_shortest_path(next)
+		print_dist()
+		print_path()
+		$BoardRect.view_path = true
 	$BoardRect.queue_redraw()
 func init_board():
 	game_over = false
@@ -50,21 +61,34 @@ func print_board():
 		for x in range(BD_WIDTH):
 			txt += "%4d"%bd.get_color(x, y)
 		print(txt)
-	pass
+func print_dist():
+	print("dist[]:")
+	for y in range(BD_WIDTH):
+		var txt = "  "
+		for x in range(BD_WIDTH):
+			txt += "%4d"%bd.get_dist(x, y)
+		print(txt)
+func print_path():
+	print("path[]:")
+	for y in range(BD_WIDTH):
+		var txt = "  "
+		for x in range(BD_WIDTH):
+			txt += "%4d"%bd.get_path(x, y)
+		print(txt)
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton && event.is_pressed():
 		if game_over: return
 		var pos = get_global_mouse_position() - $BoardRect.position
-		print("pos = ", pos)
+		#print("pos = ", pos)
 		var xy = $BoardRect.posToXY(pos)
-		print("xy = ", xy)
+		#print("xy = ", xy)
 		if xy.x >= 0 && xy.x < BD_WIDTH&& xy.y >= 0 && xy.y < BD_WIDTH:
 			if bd.get_color(xy.x, xy.y) == EMPTY:
 				do_put(xy)
 		pass
 func do_put(xy: Vector2):
 	$BoardRect.put_pos = xy
-	if !bd.put_color(xy.x, xy.y, next):
+	if !bd.put_color(xy.x, xy.y, next):		# 終局でない場合
 		next = (BLACK + WHITE) - next;
 		print_next()
 	else:	# 終局した場合
@@ -73,4 +97,8 @@ func do_put(xy: Vector2):
 			$MessLabel.text = "黒の勝ちです。"
 		else:
 			$MessLabel.text = "白の勝ちです。"
+		print("x, y = %d, %d, next = %d"%[xy.x, xy.y, next])
+		bd.BFS(xy.x, xy.y)	# 幅優先探索：pos からの距離計算
+		bd.get_shortest_path(next)
+		$BoardRect.view_path = true
 	$BoardRect.queue_redraw()

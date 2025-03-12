@@ -33,8 +33,11 @@ class CBoard : public RefCounted
 	std::vector<uchar>	m_gid;				//	石グループID
 	std::vector<uchar>	m_gid_stack;
 	std::vector<uchar>	m_path;				//	要素：1以上ならば最短パス
+	std::vector<uchar>	m_dist;				//	0 for 未探索、1以上 for 距離+1
 	std::vector<int>	m_put_stack;		//	着手箇所
 	std::vector<int>	m_seq_stack;		//	for m_seq_gid
+	std::vector<int>	m_ter_lst;			//	末端位置リスト
+	std::vector<int>	m_next_ter;			//	次の末端位置リスト
 
 protected:
     static void _bind_methods();
@@ -44,6 +47,10 @@ protected:
 	void	update_gid_sub(int ix, int ix2);
 	bool	find_horz(uchar id, int y);
 	bool	find_vert(uchar id, int x);
+	int		CBoard::min_dist_y(int x);
+	int		CBoard::min_dist_x(int y);
+	void	BFS_sub(int dist, int col);
+	void	CBoard::get_shortest_path_sub(int ix);
 
 public:
     CBoard();
@@ -59,5 +66,9 @@ public:
     int		get_ix_color(int ix) const;
     bool	put_ix_color(int ix, uchar col);
     int		sel_move_random() const;
+    int		get_path(int x, int y) const;
+    int		get_dist(int x, int y) const;
+	void	BFS(int x, int y);							//	幅優先探索により、(x, y) からの距離+1を m_dist[] に格納
+	void	CBoard::get_shortest_path(uchar col);
 };
 
