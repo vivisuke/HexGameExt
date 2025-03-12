@@ -247,6 +247,14 @@ void CBoard::get_shortest_path(uchar col) {
         get_shortest_path_sub(xyToIndex(x, m_width - 1));
     }
 }
+uchar CBoard::rollout(int x, int y, uchar col) {
+	if( put_color(x, y, col) ) return col;
+	for(;;) {
+		col = (BLACK + WHITE) - col;
+		auto ix = sel_move_random();
+		if( put_ix_color(ix, col) ) return col;
+	}
+}
 void CBoard::_bind_methods()
 {
     ClassDB::bind_method(D_METHOD("init"), &CBoard::init);

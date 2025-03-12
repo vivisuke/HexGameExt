@@ -4,7 +4,7 @@ enum {
 	EMPTY = 0, BLACK, WHITE, BWALL, WWALL
 }
 
-var BD_WIDTH = 3
+var BD_WIDTH = 4
 var ARY_WIDTH = BD_WIDTH + 1
 var bd
 var gbd
