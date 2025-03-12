@@ -54,6 +54,7 @@ protected:
 
 public:
     CBoard();
+    CBoard(const CBoard&);
     ~CBoard();
 
     void	init();
@@ -70,6 +71,6 @@ public:
     int		get_dist(int x, int y) const;
 	void	BFS(int x, int y);							//	幅優先探索により、(x, y) からの距離+1を m_dist[] に格納
 	void	CBoard::get_shortest_path(uchar col);
-	uchar	rollout(int x, int y, uchar col);							//	初手：(x, y, col)、ランダムゲーム、勝色を返す
+	uchar	rollout(int x, int y, uchar col) const;		//	初手：(x, y, col)、ランダムゲーム、勝色を返す
 };
 

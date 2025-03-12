@@ -20,6 +20,20 @@ CBoard::CBoard()
 	UtilityFunctions::print("hello!");
 	update_ary();
 }
+CBoard::CBoard(const CBoard& x) {
+	m_width = x.m_width;
+	m_ary_width = m_width + 1;
+	m_ary_height = m_width + 2;
+	m_ary_size = m_ary_width * m_ary_height;
+	m_cells = x.m_cells;
+	m_gid = x.m_gid;
+	m_gid_stack = x.m_gid_stack;
+	m_path = x.m_path;
+	m_dist = x.m_dist;
+	m_put_stack = x.m_put_stack;
+	m_seq_stack = x.m_seq_stack;
+	
+}
 
 CBoard::~CBoard()
 {
@@ -247,12 +261,13 @@ void CBoard::get_shortest_path(uchar col) {
         get_shortest_path_sub(xyToIndex(x, m_width - 1));
     }
 }
-uchar CBoard::rollout(int x, int y, uchar col) {
-	if( put_color(x, y, col) ) return col;
+uchar CBoard::rollout(int x, int y, uchar col) const {
+	CBoard b2(*this);
+	if( b2.put_color(x, y, col) ) return col;
 	for(;;) {
 		col = (BLACK + WHITE) - col;
-		auto ix = sel_move_random();
-		if( put_ix_color(ix, col) ) return col;
+		auto ix = b2.sel_move_random();
+		if( b2.put_ix_color(ix, col) ) return col;
 	}
 }
 void CBoard::_bind_methods()

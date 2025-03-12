@@ -1097,3 +1097,6 @@ cboard.cpp
 register_types.cpp
 cboard.cpp
    ライブラリ bin\libgdcboard.windows.template_debug.x86_64.lib とオブジェクト bin\libgdcboard.windows.template_debug.x86_64.exp を作成中
+register_types.cpp
+cboard.cpp
+   ライブラリ bin\libgdcboard.windows.template_debug.x86_64.lib とオブジェクト bin\libgdcboard.windows.template_debug.x86_64.exp を作成中
