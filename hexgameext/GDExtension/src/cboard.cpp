@@ -13,6 +13,8 @@ typedef unsigned char uchar;
 
 std::mt19937 rgen(std::random_device{}()); // シードを設定
 
+char buf[256];
+
 CBoard::CBoard()
 	: m_width(3)
 {
@@ -200,6 +202,30 @@ int CBoard::sel_move_random() const {
 	}
 	return 0;
 }
+int CBoard::sel_move_PMC(uchar col) const {
+	int bestix = 0;
+	double best = -1;
+	const int N_ROLLOUT = 10;
+	for(int y = 0; y != m_width; ++y) {
+		string txt;
+		for(int x = 0; x != m_width; ++x) {
+			int wcnt = 0;
+			for(int i = 0; i != N_ROLLOUT; ++i) {
+				if( rollout(x, y, col) == col )
+					++wcnt;
+			}
+			auto r = 100.0 * wcnt / N_ROLLOUT;
+			sprintf(buf, "%6.1f%%", r);
+			txt += string(buf);
+			if( r > best ) {
+				best = r;
+				bestix = xyToIndex(x, y);
+			}
+		}
+		UtilityFunctions::print(&txt[0]);
+	}
+	return bestix;
+}
 int CBoard::min_dist_y(int x) {
     int mnv = std::numeric_limits<int>::max(); // 9999 の代わりに最大値を設定 (より安全)
     int mny = -1;
@@ -262,6 +288,7 @@ void CBoard::get_shortest_path(uchar col) {
     }
 }
 uchar CBoard::rollout(int x, int y, uchar col) const {
+	//return col;
 	CBoard b2(*this);
 	if( b2.put_color(x, y, col) ) return col;
 	for(;;) {
@@ -283,7 +310,8 @@ void CBoard::_bind_methods()
     ClassDB::bind_method(D_METHOD("put_color", "value", "value", "value"), &CBoard::put_color, DEFVAL(0), DEFVAL(0), DEFVAL(0));
     ClassDB::bind_method(D_METHOD("put_ix_color", "value", "value"), &CBoard::put_ix_color, DEFVAL(0), DEFVAL(0));
     ClassDB::bind_method(D_METHOD("get_ix_color", "value"), &CBoard::get_ix_color, DEFVAL(0));
-    ClassDB::bind_method(D_METHOD("sel_move_random"), &CBoard::sel_move_random);
+    ClassDB::bind_method(D_METHOD("sel_move_random"), &CBoard::sel_move_random, DEFVAL(1));
+    ClassDB::bind_method(D_METHOD("sel_move_PMC", "value"), &CBoard::sel_move_PMC);
     ClassDB::bind_method(D_METHOD("BFS", "value", "value"), &CBoard::BFS, DEFVAL(0), DEFVAL(0));
     ClassDB::bind_method(D_METHOD("get_shortest_path", "value"), &CBoard::get_shortest_path, DEFVAL(0));
 }

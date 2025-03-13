@@ -67,6 +67,7 @@ public:
     int		get_ix_color(int ix) const;
     bool	put_ix_color(int ix, uchar col);
     int		sel_move_random() const;
+    int		sel_move_PMC(uchar) const;				//	勝率による純粋モンテカルロ法着手選択
     int		get_path(int x, int y) const;
     int		get_dist(int x, int y) const;
 	void	BFS(int x, int y);							//	幅優先探索により、(x, y) からの距離+1を m_dist[] に格納

@@ -36,7 +36,7 @@
 0034 ● C 03/13            │ToDo│ゲームオーバー状態で ▶ 押下：盤面初期化
 0035 ◎ C 03/13 03/13 0.001│ToDo│CBoard::rollout(x, y, col) 実装
 0036 ◎ C 03/13 03/13 0.001│ToDo│CBoard：コピーコンストラクタを用意し、rollout() を const に
-0037 ● C 03/13            │ToDo│
+0037 ◎ C 03/13 03/13 0.001│ToDo│CBoard::sel_move_PMC() 実装
 0038 ● C 03/13            │ToDo│
 0039 ● C 03/13            │ToDo│
 0040 ● C 03/13            │ToDo│

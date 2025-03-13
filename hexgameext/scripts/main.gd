@@ -23,6 +23,7 @@ func _ready() -> void:
 	init_board()
 	print_board()
 	print_next()
+	bd.sel_move_PMC(BLACK);
 	#
 	if false:
 		var ix
