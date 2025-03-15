@@ -15,18 +15,72 @@ std::mt19937 rgen(std::random_device{}()); // シードを設定
 
 char buf[256];
 
+int CBoardBasic::sel_move_random() const {
+	if( m_n_empty == 0 ) return 0;
+	int r = rgen() % m_n_empty + 1;
+	for(int ix = xyToIndex(0, 0); ix <= xyToIndex(m_width-1, m_width-1); ++ix) {
+		if( m_cells[ix] == EMPTY ) {
+			if( --r == 0 )
+				return ix;
+		}
+	}
+	return 0;
+}
+int CBoardBasic::sel_move_PMC(uchar col) const {
+	int bestix = 0;
+	double best = -1;
+	const int N_ROLLOUT = 1000;
+	for(int y = 0; y != m_width; ++y) {
+		string txt;
+		for(int x = 0; x != m_width; ++x) {
+			int wcnt = 0;
+			for(int i = 0; i != N_ROLLOUT; ++i) {
+				if( rollout(x, y, col) == col )
+					++wcnt;
+			}
+			auto r = 100.0 * wcnt / N_ROLLOUT;
+			//sprintf(buf, "%6.1f%%", r);
+			//txt += string(buf);
+			if( r > best ) {
+				best = r;
+				bestix = xyToIndex(x, y);
+			}
+		}
+		//UtilityFunctions::print(&txt[0]);
+	}
+	//sprintf(buf, "best = %6.1f%%", best);
+	//string txt = buf;
+	//UtilityFunctions::print(&txt[0]);
+
+	return bestix;
+}
+uchar CBoardBasic::rollout(int x, int y, uchar col) const {
+	CBoardBasic b2(*this);
+	if( b2.put_color(x, y, col) ) return col;
+	for(;;) {
+		col = (BLACK + WHITE) - col;
+		auto ix = b2.sel_move_random();
+		if( b2.put_ix_color(ix, col) ) return col;
+	}
+}
+//--------------------------------------------------------------------------------
+
 CBoard::CBoard()
-	: m_width(3)
+	//: m_width(3)
 {
 	//cout << "a CBoard Object is created." << endl;
 	UtilityFunctions::print("hello!");
-	update_ary();
+	m_bd.update_ary();
 }
+#if 0
 CBoard::CBoard(const CBoard& x) {
 	m_width = x.m_width;
 	m_ary_width = m_width + 1;
 	m_ary_height = m_width + 2;
 	m_ary_size = m_ary_width * m_ary_height;
+	m_n_empty = x.m_n_empty;
+	m_n_node = x.m_n_node;
+	m_seq_gid = x.m_seq_gid;
 	m_cells = x.m_cells;
 	m_gid = x.m_gid;
 	m_gid_stack = x.m_gid_stack;
@@ -34,13 +88,12 @@ CBoard::CBoard(const CBoard& x) {
 	m_dist = x.m_dist;
 	m_put_stack = x.m_put_stack;
 	m_seq_stack = x.m_seq_stack;
-	
 }
-
+#endif
 CBoard::~CBoard()
 {
 }
-
+#if 0
 void CBoard::update_ary() {
 	m_ary_width = m_width + 1;
 	m_ary_height = m_width + 2;
@@ -53,7 +106,10 @@ void CBoard::update_ary() {
 	m_dist.resize(m_ary_size);
 	init();
 }
+#endif
 void CBoard::init() {
+	m_bd.init();
+#if 0
 	m_seq_gid = 0;
 	m_n_empty = m_width * m_width;
 	for(int y = 0; y != m_width; ++y) {
@@ -66,33 +122,45 @@ void CBoard::init() {
 	}
 	for(auto &v : m_gid) v = 0;
 	for(auto &v : m_path) v = 0;
+#endif
 }
 void CBoard::set_width(int width) {
+	m_bd.set_width(width);
+#if 0
 	m_width = width;
 	update_ary();
+#endif
 }
 int CBoard::get_width() const
 {
-    return m_width;
+	return m_bd.get_width();
+    //return m_width;
 }
 int CBoard::xyToIndex(int x, int y) const {	//	x, y: [0, m_width)
-	return (y+1)*m_ary_width + x;
+	return m_bd.xyToIndex(x, y);
+	//return (y+1)*m_ary_width + x;
 }
 int CBoard::get_path(int x, int y) const {
-	return m_path[xyToIndex(x, y)];
+	return m_bd.get_path(x, y);
+	//return m_path[xyToIndex(x, y)];
 }
 int CBoard::get_dist(int x, int y) const {
-	return m_dist[xyToIndex(x, y)];
+	return m_bd.get_dist(x, y);
+	//return m_dist[xyToIndex(x, y)];
 }
 int CBoard::get_color(int x, int y) const {
-	return m_cells[xyToIndex(x, y)];
+	return m_bd.get_color(x, y);
+	//return m_cells[xyToIndex(x, y)];
 }
 bool CBoard::put_color(int x, int y, uchar col) {
 	return put_ix_color(xyToIndex(x, y), col);
+	//return put_ix_color(xyToIndex(x, y), col);
 }
 int CBoard::get_ix_color(int ix) const {
-	return m_cells[ix];
+	return m_bd.get_ix_color(ix);
+	//return m_cells[ix];
 }
+#if 0
 bool CBoard::find_horz(uchar gid, int y) {
 	for(int x = 0; x != m_width; ++x) {
 		if( m_gid[xyToIndex(x, y)] == gid )
@@ -107,7 +175,10 @@ bool CBoard::find_vert(uchar gid, int x) {
 	}
 	return false;
 }
+#endif
 bool CBoard::put_ix_color(int ix, uchar col) {
+	return m_bd.put_ix_color(ix, col);
+#if 0
 	m_n_empty -= 1;
 	m_cells[ix] = col;
 	update_gid(ix, col);
@@ -117,7 +188,9 @@ bool CBoard::put_ix_color(int ix, uchar col) {
 	} else {
 		return find_vert(gid, 0) && find_vert(gid, m_width-1);		//	左右辺と連結？
 	}
+#endif
 }
+#if 0
 void CBoard::update_gid_sub(int ix, int ix2) {
 	if( m_cells[ix2] != m_cells[ix] ) return;
 	if (m_gid[ix] == 0)		// 最初の連結の場合
@@ -142,6 +215,8 @@ void CBoard::update_gid(int ix, uchar col) {
 		m_gid[ix] = ++m_seq_gid;
 	}
 }
+#endif
+#if 0
 void CBoard::BFS_sub(int dist, int col) {
     m_next_ter.clear(); // GDScriptの #m_next_ter.clear()  と m_next_ter = PackedByteArray() に相当
     for (int ix : m_ter_lst) {
@@ -180,9 +255,12 @@ void CBoard::BFS_sub(int dist, int col) {
     m_ter_lst = m_next_ter; // GDScriptの m_ter_lst = m_next_ter.duplicate() に相当 (C++のvectorはコピー代入)
     BFS_sub(dist + 1, col);
 }
+#endif
 
 // GDScriptの BFS(x, y) に相当する関数
 void CBoard::BFS(int x, int y) {
+    m_bd.BFS(x, y);
+#if 0
     std::fill(m_dist.begin(), m_dist.end(), 0); // GDScriptの m_dist.fill(0) に相当
     int ix = xyToIndex(x, y);
     m_dist[ix] = 1;
@@ -190,8 +268,11 @@ void CBoard::BFS(int x, int y) {
     m_ter_lst = {ix}; // GDScriptの m_ter_lst = [ix] に相当
     BFS_sub(2, col);
     // GDScriptの pass は C++ では不要 (何もしない)
+#endif
 }
 int CBoard::sel_move_random() const {
+	return m_bd.sel_move_random();
+#if 0
 	if( m_n_empty == 0 ) return 0;
 	int r = rgen() % m_n_empty + 1;
 	for(int ix = xyToIndex(0, 0); ix <= xyToIndex(m_width-1, m_width-1); ++ix) {
@@ -201,8 +282,11 @@ int CBoard::sel_move_random() const {
 		}
 	}
 	return 0;
+#endif
 }
 int CBoard::sel_move_PMC(uchar col) const {
+	return m_bd.sel_move_PMC(col);
+#if 0
 	int bestix = 0;
 	double best = -1;
 	const int N_ROLLOUT = 10;
@@ -225,7 +309,9 @@ int CBoard::sel_move_PMC(uchar col) const {
 		UtilityFunctions::print(&txt[0]);
 	}
 	return bestix;
+#endif
 }
+#if 0
 int CBoard::min_dist_y(int x) {
     int mnv = std::numeric_limits<int>::max(); // 9999 の代わりに最大値を設定 (より安全)
     int mny = -1;
@@ -250,6 +336,8 @@ int CBoard::min_dist_x(int y) {
     }
     return mnx;
 }
+#endif
+#if 0
 void CBoard::get_shortest_path_sub(int ix) {
     while (m_dist[ix] != 0) {
         int dist = m_dist[ix];
@@ -272,7 +360,10 @@ void CBoard::get_shortest_path_sub(int ix) {
         }
     }
 }
+#endif
 void CBoard::get_shortest_path(uchar col) {
+    m_bd.get_shortest_path(col);
+#if 0
     std::fill(m_path.begin(), m_path.end(), 0); // m_path を 0 で埋める
     //godot::print(string("col = ") + to_string((int)col));
     if (col == WHITE) {
@@ -286,16 +377,19 @@ void CBoard::get_shortest_path(uchar col) {
         x = min_dist_x(m_width - 1);
         get_shortest_path_sub(xyToIndex(x, m_width - 1));
     }
+#endif
 }
 uchar CBoard::rollout(int x, int y, uchar col) const {
-	//return col;
-	CBoard b2(*this);
+	return col;
+#if 0
+	CBoardRO b2(*this);
 	if( b2.put_color(x, y, col) ) return col;
 	for(;;) {
 		col = (BLACK + WHITE) - col;
 		auto ix = b2.sel_move_random();
 		if( b2.put_ix_color(ix, col) ) return col;
 	}
+#endif
 }
 void CBoard::_bind_methods()
 {
@@ -314,4 +408,5 @@ void CBoard::_bind_methods()
     ClassDB::bind_method(D_METHOD("sel_move_PMC", "value"), &CBoard::sel_move_PMC);
     ClassDB::bind_method(D_METHOD("BFS", "value", "value"), &CBoard::BFS, DEFVAL(0), DEFVAL(0));
     ClassDB::bind_method(D_METHOD("get_shortest_path", "value"), &CBoard::get_shortest_path, DEFVAL(0));
+    ClassDB::bind_method(D_METHOD("rollout", "value", "value", "value"), &CBoard::rollout, DEFVAL(0), DEFVAL(0), DEFVAL(0));
 }

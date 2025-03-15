@@ -37,6 +37,16 @@
 0035 ◎ C 03/13 03/13 0.001│ToDo│CBoard::rollout(x, y, col) 実装
 0036 ◎ C 03/13 03/13 0.001│ToDo│CBoard：コピーコンストラクタを用意し、rollout() を const に
 0037 ◎ C 03/13 03/13 0.001│ToDo│CBoard::sel_move_PMC() 実装
-0038 ● C 03/13            │ToDo│
-0039 ● C 03/13            │ToDo│
-0040 ● C 03/13            │ToDo│
+0038 ● C 03/13            │問題│CBoard::rollout() が動作不良？
+0039 ● C 03/13            │ToDo│CBoard：GDExtension に無関係な部分を CBoardBase に分離？
+0040 ● C 03/13            │ToDo│CBoard::saveState(), restoreState()
+0041 ● C 03/15            │ToDo│rollout() 用盤面クラス実装？
+0042 ◎ C 03/15 03/16 0.001│ToDo│CBoardBase を定義し、CBoard のメンバ変数に
+0043 ● C 03/15            │ToDo│
+0044 ● C 03/15            │ToDo│
+0045 ● C 03/15            │ToDo│
+0046 ● C 03/15            │ToDo│
+0047 ● C 03/15            │ToDo│
+0048 ● C 03/15            │ToDo│
+0049 ● C 03/15            │ToDo│
+0050 ● C 03/15            │ToDo│
