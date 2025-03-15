@@ -27,6 +27,8 @@ public:
 	int xyToIndex(int x, int y) const {	//	x, y: [0, m_width)
 		return (y+1)*m_ary_width + x;
 	}
+    int		ixToX(int ix) const { return ix % m_ary_width; }
+    int		ixToY(int ix) const { return ix / m_ary_width - 1; }
     void	init() {
 		m_seq_gid = 0;
 		m_n_empty = m_width * m_width;
@@ -235,8 +237,8 @@ public:
 	    }
 	}
 	int sel_move_random() const;
-    int sel_move_PMC(uchar) const;				//	勝率による純粋モンテカルロ法着手選択
 	uchar rollout(int x, int y, uchar col) const;		//	初手：(x, y, col)、ランダムゲーム、勝色を返す
+    int sel_move_PMC(uchar) const;				//	勝率による純粋モンテカルロ法着手選択
 	
 
 public:
@@ -256,6 +258,7 @@ public:
 	std::vector<int>	m_seq_stack;		//	for m_seq_gid
 	std::vector<int>	m_ter_lst;			//	末端位置リスト
 	std::vector<int>	m_next_ter;			//	次の末端位置リスト
+	std::vector<double>	m_win_rate;			//	各位置に打った場合の勝率
 };
 
 //--------------------------------------------------------------------------------

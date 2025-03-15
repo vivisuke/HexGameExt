@@ -4,7 +4,7 @@ enum {
 	EMPTY = 0, BLACK, WHITE, BWALL, WWALL
 }
 
-var BD_WIDTH = 3
+var BD_WIDTH = 2
 var ARY_WIDTH = BD_WIDTH + 1
 var bd
 var gbd
@@ -24,7 +24,7 @@ func _ready() -> void:
 	#print(bd.rollout(0, 0, BLACK))
 	print_board()
 	print_next()
-	#bd.sel_move_PMC(BLACK);
+	bd.sel_move_PMC(BLACK);
 	#
 	if false:
 		var ix

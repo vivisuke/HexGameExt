@@ -15,6 +15,8 @@ std::mt19937 rgen(std::random_device{}()); // シードを設定
 
 char buf[256];
 
+CBoardBasic g_bd;
+
 int CBoardBasic::sel_move_random() const {
 	if( m_n_empty == 0 ) return 0;
 	int r = rgen() % m_n_empty + 1;
@@ -39,22 +41,34 @@ int CBoardBasic::sel_move_PMC(uchar col) const {
 					++wcnt;
 			}
 			auto r = 100.0 * wcnt / N_ROLLOUT;
-			//sprintf(buf, "%6.1f%%", r);
-			//txt += string(buf);
+			sprintf(buf, "%6.1f%%", r);
+			txt += string(buf);
 			if( r > best ) {
 				best = r;
 				bestix = xyToIndex(x, y);
 			}
 		}
-		//UtilityFunctions::print(&txt[0]);
+		UtilityFunctions::print(&txt[0]);
 	}
-	//sprintf(buf, "best = %6.1f%%", best);
-	//string txt = buf;
-	//UtilityFunctions::print(&txt[0]);
+	sprintf(buf, "best = %6.1f%%", best);
+	string txt = buf;
+	UtilityFunctions::print(&txt[0]);
+	sprintf(buf, "(x, y) = %d, %d", ixToX(bestix), ixToY(bestix));
+	txt = buf;
+	UtilityFunctions::print(&txt[0]);
 
 	return bestix;
 }
 uchar CBoardBasic::rollout(int x, int y, uchar col) const {
+#if 1
+	g_bd = *this;
+	if( g_bd.put_color(x, y, col) ) return col;
+	for(;;) {
+		col = (BLACK + WHITE) - col;
+		auto ix = g_bd.sel_move_random();
+		if( g_bd.put_ix_color(ix, col) ) return col;
+	}
+#else
 	CBoardBasic b2(*this);
 	if( b2.put_color(x, y, col) ) return col;
 	for(;;) {
@@ -62,6 +76,7 @@ uchar CBoardBasic::rollout(int x, int y, uchar col) const {
 		auto ix = b2.sel_move_random();
 		if( b2.put_ix_color(ix, col) ) return col;
 	}
+#endif
 }
 //--------------------------------------------------------------------------------
 

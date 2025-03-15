@@ -42,7 +42,7 @@
 0040 ● C 03/13            │ToDo│CBoard::saveState(), restoreState()
 0041 ● C 03/15            │ToDo│rollout() 用盤面クラス実装？
 0042 ◎ C 03/15 03/16 0.001│ToDo│CBoardBase を定義し、CBoard のメンバ変数に
-0043 ● C 03/15            │ToDo│
+0043 ◎ C 03/15 03/16 0.001│問題│盤面サイズにより？クラッシュすることがある
 0044 ● C 03/15            │ToDo│
 0045 ● C 03/15            │ToDo│
 0046 ● C 03/15            │ToDo│
