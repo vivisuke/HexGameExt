@@ -31,32 +31,34 @@ int CBoardBasic::sel_move_random() const {
 int CBoardBasic::sel_move_PMC(uchar col) const {
 	int bestix = 0;
 	double best = -1;
-	const int N_ROLLOUT = 1000;
+	const int N_ROLLOUT = 10000;
 	for(int y = 0; y != m_width; ++y) {
 		string txt;
 		for(int x = 0; x != m_width; ++x) {
-			int wcnt = 0;
-			for(int i = 0; i != N_ROLLOUT; ++i) {
-				if( rollout(x, y, col) == col )
-					++wcnt;
-			}
-			auto r = 100.0 * wcnt / N_ROLLOUT;
-			sprintf(buf, "%6.1f%%", r);
-			txt += string(buf);
-			if( r > best ) {
-				best = r;
-				bestix = xyToIndex(x, y);
+			if( get_color(x, y) == EMPTY ) {
+				int wcnt = 0;
+				for(int i = 0; i != N_ROLLOUT; ++i) {
+					if( rollout(x, y, col) == col )
+						++wcnt;
+				}
+				auto r = 100.0 * wcnt / N_ROLLOUT;
+				//sprintf(buf, "%6.1f%%", r);
+				//txt += string(buf);
+				if( r > best ) {
+					best = r;
+					bestix = xyToIndex(x, y);
+				}
+			} else {
 			}
 		}
-		UtilityFunctions::print(&txt[0]);
+		//UtilityFunctions::print(&txt[0]);
 	}
-	sprintf(buf, "best = %6.1f%%", best);
-	string txt = buf;
-	UtilityFunctions::print(&txt[0]);
-	sprintf(buf, "(x, y) = %d, %d", ixToX(bestix), ixToY(bestix));
-	txt = buf;
-	UtilityFunctions::print(&txt[0]);
-
+	//sprintf(buf, "best = %6.1f%%", best);
+	//string txt = buf;
+	//UtilityFunctions::print(&txt[0]);
+	//sprintf(buf, "(x, y) = %d, %d", ixToX(bestix), ixToY(bestix));
+	//txt = buf;
+	//UtilityFunctions::print(&txt[0]);
 	return bestix;
 }
 uchar CBoardBasic::rollout(int x, int y, uchar col) const {

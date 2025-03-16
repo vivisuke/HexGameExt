@@ -4,7 +4,7 @@ enum {
 	EMPTY = 0, BLACK, WHITE, BWALL, WWALL
 }
 
-var BD_WIDTH = 2
+var BD_WIDTH = 3
 var ARY_WIDTH = BD_WIDTH + 1
 var bd
 var gbd
@@ -24,7 +24,7 @@ func _ready() -> void:
 	#print(bd.rollout(0, 0, BLACK))
 	print_board()
 	print_next()
-	bd.sel_move_PMC(BLACK);
+	#bd.sel_move_PMC(BLACK);
 	#
 	if false:
 		var ix
@@ -110,12 +110,12 @@ func _on_next_button_pressed() -> void:
 	if game_over: return
 	var ix
 	if next == BLACK:
-		ix = bd.sel_move_random()
-		#pos = bd.sel_move_PMC(next)
+		#ix = bd.sel_move_random()
+		ix = bd.sel_move_PMC(next)
 		#pos = bd.sel_move_MCTS(next)
 	else:
-		ix = bd.sel_move_random()
-		#pos = bd.sel_move_PMC(next)
+		#ix = bd.sel_move_random()
+		ix = bd.sel_move_PMC(next)
 		#pos = bd.sel_move_MCTS(next)
 	var x = ix % ARY_WIDTH
 	var y = ix / ARY_WIDTH - 1
