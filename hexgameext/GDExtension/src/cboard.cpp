@@ -81,6 +81,9 @@ uchar CBoardBasic::rollout(int x, int y, uchar col) const {
 	}
 #endif
 }
+int CBoardBasic::sel_move_MCTS(uchar col) const {
+	return 0;
+}
 //--------------------------------------------------------------------------------
 
 CBoard::CBoard()
@@ -304,30 +307,9 @@ int CBoard::sel_move_random() const {
 }
 int CBoard::sel_move_PMC(uchar col) const {
 	return m_bd.sel_move_PMC(col);
-#if 0
-	int bestix = 0;
-	double best = -1;
-	const int N_ROLLOUT = 10;
-	for(int y = 0; y != m_width; ++y) {
-		string txt;
-		for(int x = 0; x != m_width; ++x) {
-			int wcnt = 0;
-			for(int i = 0; i != N_ROLLOUT; ++i) {
-				if( rollout(x, y, col) == col )
-					++wcnt;
-			}
-			auto r = 100.0 * wcnt / N_ROLLOUT;
-			sprintf(buf, "%6.1f%%", r);
-			txt += string(buf);
-			if( r > best ) {
-				best = r;
-				bestix = xyToIndex(x, y);
-			}
-		}
-		UtilityFunctions::print(&txt[0]);
-	}
-	return bestix;
-#endif
+}
+int CBoard::sel_move_MCTS(uchar col) const {
+	return m_bd.sel_move_MCTS(col);
 }
 #if 0
 int CBoard::min_dist_y(int x) {
@@ -412,19 +394,20 @@ uchar CBoard::rollout(int x, int y, uchar col) const {
 void CBoard::_bind_methods()
 {
     ClassDB::bind_method(D_METHOD("init"), &CBoard::init);
-    ClassDB::bind_method(D_METHOD("set_width", "value"), &CBoard::set_width, DEFVAL(3));
+    ClassDB::bind_method(D_METHOD("set_width", "width"), &CBoard::set_width, DEFVAL(3));
     ClassDB::bind_method(D_METHOD("get_width"), &CBoard::get_width);
     ClassDB::bind_method(D_METHOD("get_n_empty"), &CBoard::get_n_empty);
-    ClassDB::bind_method(D_METHOD("xyToIndex", "value", "value"), &CBoard::xyToIndex, DEFVAL(0), DEFVAL(0));
-    ClassDB::bind_method(D_METHOD("get_path", "value", "value"), &CBoard::get_path, DEFVAL(0), DEFVAL(0));
-    ClassDB::bind_method(D_METHOD("get_dist", "value", "value"), &CBoard::get_dist, DEFVAL(0), DEFVAL(0));
-    ClassDB::bind_method(D_METHOD("get_color", "value", "value"), &CBoard::get_color, DEFVAL(0), DEFVAL(0));
-    ClassDB::bind_method(D_METHOD("put_color", "value", "value", "value"), &CBoard::put_color, DEFVAL(0), DEFVAL(0), DEFVAL(0));
-    ClassDB::bind_method(D_METHOD("put_ix_color", "value", "value"), &CBoard::put_ix_color, DEFVAL(0), DEFVAL(0));
-    ClassDB::bind_method(D_METHOD("get_ix_color", "value"), &CBoard::get_ix_color, DEFVAL(0));
-    ClassDB::bind_method(D_METHOD("sel_move_random"), &CBoard::sel_move_random, DEFVAL(1));
-    ClassDB::bind_method(D_METHOD("sel_move_PMC", "value"), &CBoard::sel_move_PMC);
-    ClassDB::bind_method(D_METHOD("BFS", "value", "value"), &CBoard::BFS, DEFVAL(0), DEFVAL(0));
-    ClassDB::bind_method(D_METHOD("get_shortest_path", "value"), &CBoard::get_shortest_path, DEFVAL(0));
-    ClassDB::bind_method(D_METHOD("rollout", "value", "value", "value"), &CBoard::rollout, DEFVAL(0), DEFVAL(0), DEFVAL(0));
+    ClassDB::bind_method(D_METHOD("xyToIndex", "x", "y"), &CBoard::xyToIndex);
+    ClassDB::bind_method(D_METHOD("get_path", "x", "y"), &CBoard::get_path);
+    ClassDB::bind_method(D_METHOD("get_dist", "x", "y"), &CBoard::get_dist);
+    ClassDB::bind_method(D_METHOD("get_color", "x", "y"), &CBoard::get_color);
+    ClassDB::bind_method(D_METHOD("put_color", "x", "y", "color"), &CBoard::put_color);
+    ClassDB::bind_method(D_METHOD("put_ix_color", "ix", "color"), &CBoard::put_ix_color);
+    ClassDB::bind_method(D_METHOD("get_ix_color", "ix"), &CBoard::get_ix_color);
+    ClassDB::bind_method(D_METHOD("sel_move_random"), &CBoard::sel_move_random);
+    ClassDB::bind_method(D_METHOD("sel_move_PMC", "color"), &CBoard::sel_move_PMC);
+    ClassDB::bind_method(D_METHOD("sel_move_MCTS", "color"), &CBoard::sel_move_MCTS);
+    ClassDB::bind_method(D_METHOD("BFS", "x", "y"), &CBoard::BFS);
+    ClassDB::bind_method(D_METHOD("get_shortest_path", "color"), &CBoard::get_shortest_path);
+    ClassDB::bind_method(D_METHOD("rollout", "x", "y", "color"), &CBoard::rollout);
 }

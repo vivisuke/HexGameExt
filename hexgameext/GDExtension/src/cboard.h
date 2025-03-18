@@ -238,7 +238,8 @@ public:
 	}
 	int sel_move_random() const;
 	uchar rollout(int x, int y, uchar col) const;		//	初手：(x, y, col)、ランダムゲーム、勝色を返す
-    int sel_move_PMC(uchar) const;				//	勝率による純粋モンテカルロ法着手選択
+    int sel_move_PMC(uchar) const;				//	勝率による純粋モンテカルロ法 着手選択
+    int sel_move_MCTS(uchar) const;				//	モンテカルロ木探索 着手選択
 	
 
 public:
@@ -321,6 +322,7 @@ public:
     bool	put_ix_color(int ix, uchar col);
     int		sel_move_random() const;
     int		sel_move_PMC(uchar) const;				//	勝率による純粋モンテカルロ法着手選択
+    int		sel_move_MCTS(uchar) const;				//	モンテカルロ木探索 着手選択
     int		get_path(int x, int y) const;
     int		get_dist(int x, int y) const;
 	void	BFS(int x, int y);							//	幅優先探索により、(x, y) からの距離+1を m_dist[] に格納
