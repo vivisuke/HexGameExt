@@ -23,7 +23,6 @@ func _ready() -> void:
 	init_board()
 	#print(bd.rollout(0, 0, BLACK))
 	print_board()
-	print_next()
 	#bd.sel_move_PMC(BLACK);
 	#
 	if false:
@@ -49,8 +48,10 @@ func _ready() -> void:
 func init_board():
 	game_over = false
 	next = BLACK
+	print_next()
 	move_hist.clear()
 	bd.init()
+	$BoardRect.put_pos = Vector2(-1, -1)
 	$BoardRect.queue_redraw()
 func print_next():
 	if next == BLACK:
@@ -107,7 +108,9 @@ func do_put(xy: Vector2):
 
 
 func _on_next_button_pressed() -> void:
-	if game_over: return
+	if game_over:
+		init_board()
+		return
 	var ix
 	if next == BLACK:
 		#ix = bd.sel_move_random()
@@ -122,4 +125,5 @@ func _on_next_button_pressed() -> void:
 	var pos : Vector2 = Vector2(x, y)
 	print("put pos = ", pos)
 	do_put(pos)
+	print("")
 	pass # Replace with function body.

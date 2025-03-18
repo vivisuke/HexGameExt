@@ -57,7 +57,7 @@ func draw_stone(x, y, b):
 	#var col = Color("#6060ff") if b else Color("pink")
 	var col = BLACK_COL if b else WHITE_COL
 	draw_circle(xyToPos(x, y), CELL_WD*0.4, col)
-	draw_circle(xyToPos(x, y), CELL_WD*0.4, Color.BLACK, false, 1.0, true)
+	draw_circle(xyToPos(x, y), CELL_WD*0.4, Color.BLACK, false, 1.0, true)	# 枠線
 func _draw():
 	for i in range(N_HORZ):
 		add_axis_label(xyToPos(i, -1.25)+Vector2(0, CELL_WD*(11-N_HORZ)/16), "%c"%(0x61+i))		# 上辺
@@ -98,7 +98,10 @@ func _draw():
 	const R = 6
 	if put_pos.x >= 0:
 		var p = vec2ToPos(put_pos)
-		draw_rect(Rect2(p-Vector2(R, R), Vector2(2*R, 2*R)), Color.GREEN)
+		#draw_rect(Rect2(p-Vector2(R, R), Vector2(2*R, 2*R)), Color.GREEN)
+		#var col = Color.BLACK if bd.get_color(put_pos.x, put_pos.y) == 2 else Color.WHITE
+		var col = Color.DARK_GREEN if bd.get_color(put_pos.x, put_pos.y) == 2 else Color.GREEN
+		draw_circle(p, CELL_WD*0.15, col, false, 2.0, true)	# 枠線
 	# 連結パス強調
 	if view_path:
 		for y in range(BWD):
@@ -107,7 +110,9 @@ func _draw():
 				if bd.get_path(x, y) != 0:
 					var p = xyToPos(x, y)
 					#draw_circle(p, CELL_WD*0.1, Color.WHITE)
-					draw_rect(Rect2(p-Vector2(R, R), Vector2(2*R, 2*R)), Color.GREEN)
+					#draw_rect(Rect2(p-Vector2(R, R), Vector2(2*R, 2*R)), Color.GREEN)
+					var col = Color.BLACK if bd.get_color(x, y) == 2 else Color.WHITE
+					draw_circle(p, CELL_WD*0.15, col, false, 2.0, true)	# 枠線
 	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

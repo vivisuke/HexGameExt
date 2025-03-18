@@ -42,16 +42,17 @@ int CBoardBasic::sel_move_PMC(uchar col) const {
 						++wcnt;
 				}
 				auto r = 100.0 * wcnt / N_ROLLOUT;
-				//sprintf(buf, "%6.1f%%", r);
-				//txt += string(buf);
+				sprintf(buf, "%6.1f%%", r);
+				txt += string(buf);
 				if( r > best ) {
 					best = r;
 					bestix = xyToIndex(x, y);
 				}
 			} else {
+				txt += "  -----";
 			}
 		}
-		//UtilityFunctions::print(&txt[0]);
+		UtilityFunctions::print(&txt[0]);
 	}
 	//sprintf(buf, "best = %6.1f%%", best);
 	//string txt = buf;
