@@ -5,6 +5,7 @@
 //#include <godot_cpp/classes/global_scope.hpp>
 #include <random>
 #include <iostream>
+#include "MCTS.h"
 
 using namespace godot;
 using namespace std;
@@ -82,6 +83,9 @@ uchar CBoardBasic::rollout(int x, int y, uchar col) const {
 #endif
 }
 int CBoardBasic::sel_move_MCTS(uchar col) const {
+	MCTS mcts;
+	g_bd = *this;
+	mcts.search(g_bd, col, 1);
 	return 0;
 }
 //--------------------------------------------------------------------------------

@@ -1,8 +1,8 @@
-//----------------------------------------------------------------------
+ï»¿//----------------------------------------------------------------------
 //
 //			File:			"MCTS.h"
 //			Created:		16-3-2025
-//			Author:			’Ã“cLG
+//			Author:			æ´¥ç”°ä¼¸ç§€
 //			Description:
 //
 //----------------------------------------------------------------------
@@ -10,19 +10,78 @@
 #pragma once
 
 #include <vector>
+#include <limits>
+#include <math.h>
+#include "cboard.h"
+
+const double C_PUCT = 1.4;
 
 typedef unsigned char uchar;
 
 struct MCTSNode {
-	MCTSNode	*m_parent;		//	eƒm[ƒh‚Ö‚Ìƒ|ƒCƒ“ƒ^
-	uchar	m_ix;				//	‚±‚Ìƒm[ƒh‚ÉŠ‚é’…èˆÊ’u
+public:
+	MCTSNode() {
+		m_ix = 0;
+		m_col = 0;
+		m_visits = 0;
+		m_wins = 0;
+	}
+	//	ãƒãƒ¼ãƒ‰ã® m_children[ix] ã® UCB ã‚’è¨ˆç®—
+	double calculate_ucb(int ix) const {
+		const MCTSNode* node = &m_children[ix];
+		if( node->m_visits == 0 ) return std::numeric_limits<double>::max();
+		double exploitation_term = (double)node->m_wins / node->m_visits;		// æ´»ç”¨ (å‹ç‡)
+		double exploration_term = C_PUCT * sqrt(log(m_visits)) / node->m_visits;		// æ¢ç´¢
+		return exploitation_term + exploration_term;
+	}
+	//	return: æ¬¡ã«æ¢ç´¢ã™ã¹ãå­ãƒãƒ¼ãƒ‰ ix
+	int select_child_ucb() const {
+		int best_ix = -1;
+		double best_ucb = std::numeric_limits<double>::min();
+		for(int ix = 0; ix != m_children.size(); ++ix) {
+			auto ucb = calculate_ucb(ix);
+			if( ucb > best_ucb ) {
+				best_ucb = ucb;
+				best_ix = ix;
+			}
+		}
+		return best_ix;
+	}
+public:
+	//MCTSNode	*m_parent;		//	è¦ªãƒãƒ¼ãƒ‰ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+	uchar	m_ix;				//	ã“ã®ãƒãƒ¼ãƒ‰ã«è‡³ã‚‹ç€æ‰‹ä½ç½®
 	uchar	m_col;
-	int		m_visits;			//	–K–â‰ñ”
-	int		m_wins;				//	Ÿ—˜‰ñ”
-	std::vector<MCTSNode>	m_children;		//	qƒm[ƒhƒŠƒXƒg
+	int		m_visits;			//	è¨ªå•å›æ•°
+	int		m_wins;				//	å‹åˆ©å›æ•°
+	std::vector<MCTSNode>	m_children;		//	å­ãƒãƒ¼ãƒ‰ãƒªã‚¹ãƒˆ
 };
 
 class MCTS {
-	MCTSNode	m_toot;
+public:
+	MCTS(/*CBoardBasic *bd*/)
+		//: m_vd(bd)
+	{
+	}
+public:
+	void expand(MCTSNode *node, CBoardBasic& bd, uchar col) {
+		node->m_children.reize(bd.get_n_empty());
+		int ix = bd.xyToIndex(0, 0);
+		for(int i = 0; i != bd.get_n_empty(); ++i) {
+			while( bd.get_ix_color(ix) != EMPTY ) ++ix;
+			node->m_children[i].m_ix = ix;
+			node->m_children[i].m_col = col;
+		}
+	}
+	int	search(CBoardBasic& bd, uchar col, int n_itr) {
+		for(int i = 0; i != n_itr; ++i) {
+			MCTSNode *node = m_root;
+		}
+		return 0;
+	}
+
+public:
+	CBoardBasic	*m_bd;
+	MCTSNode	m_root;
+	std::vector<MCTSNode*>	m_node_list;		//	æ¢ç´¢ãƒ‘ã‚¹
 
 };
