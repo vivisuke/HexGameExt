@@ -64,9 +64,12 @@ int CBoardBasic::sel_move_PMC(uchar col) const {
 	return bestix;
 }
 uchar CBoardBasic::rollout(int x, int y, uchar col) const {
+	return rollout(xyToIndex(x, y), col);
+}
+uchar CBoardBasic::rollout(int ix, uchar col) const {
 #if 1
 	g_bd = *this;
-	if( g_bd.put_color(x, y, col) ) return col;
+	if( g_bd.put_ix_color(ix, col) ) return col;
 	for(;;) {
 		col = (BLACK + WHITE) - col;
 		auto ix = g_bd.sel_move_random();
@@ -97,57 +100,24 @@ CBoard::CBoard()
 	UtilityFunctions::print("hello!");
 	m_bd.update_ary();
 }
-#if 0
-CBoard::CBoard(const CBoard& x) {
-	m_width = x.m_width;
-	m_ary_width = m_width + 1;
-	m_ary_height = m_width + 2;
-	m_ary_size = m_ary_width * m_ary_height;
-	m_n_empty = x.m_n_empty;
-	m_n_node = x.m_n_node;
-	m_seq_gid = x.m_seq_gid;
-	m_cells = x.m_cells;
-	m_gid = x.m_gid;
-	m_gid_stack = x.m_gid_stack;
-	m_path = x.m_path;
-	m_dist = x.m_dist;
-	m_put_stack = x.m_put_stack;
-	m_seq_stack = x.m_seq_stack;
-}
-#endif
 CBoard::~CBoard()
 {
 }
+String CBoard::test_str() const {
 #if 0
-void CBoard::update_ary() {
-	m_ary_width = m_width + 1;
-	m_ary_height = m_width + 2;
-	m_ary_size = m_ary_width * m_ary_height;
-
-	m_cells.resize(m_ary_size);
-	for(auto& v: m_cells) v = BWALL;
-	m_gid.resize(m_ary_size);
-	m_path.resize(m_ary_size);
-	m_dist.resize(m_ary_size);
-	init();
-}
+	std::string txt = "hoge";
+	//auto txt = String("xyz = {}").format(123);
+	return String(&txt[0]);
+#else
+	char buf[256];
+	sprintf(buf, "a = %4d", 123);
+	string txt(buf);
+	return String(&txt[0]);
+	//return String(buf);
 #endif
+}
 void CBoard::init() {
 	m_bd.init();
-#if 0
-	m_seq_gid = 0;
-	m_n_empty = m_width * m_width;
-	for(int y = 0; y != m_width; ++y) {
-		auto ix = xyToIndex(0, y);
-		m_cells[ix-1] = WWALL;
-		m_cells[ix+m_width] = WWALL;
-		for(int x = 0; x != m_width; ++x) {
-			m_cells[xyToIndex(x, y)] = EMPTY;
-		}
-	}
-	for(auto &v : m_gid) v = 0;
-	for(auto &v : m_path) v = 0;
-#endif
 }
 void CBoard::set_width(int width) {
 	m_bd.set_width(width);
@@ -384,7 +354,8 @@ void CBoard::get_shortest_path(uchar col) {
 #endif
 }
 uchar CBoard::rollout(int x, int y, uchar col) const {
-	return col;
+	return m_bd.rollout(x, y, col);
+	//return col;
 #if 0
 	CBoardRO b2(*this);
 	if( b2.put_color(x, y, col) ) return col;
@@ -397,6 +368,7 @@ uchar CBoard::rollout(int x, int y, uchar col) const {
 }
 void CBoard::_bind_methods()
 {
+    ClassDB::bind_method(D_METHOD("test_str"), &CBoard::test_str);
     ClassDB::bind_method(D_METHOD("init"), &CBoard::init);
     ClassDB::bind_method(D_METHOD("set_width", "width"), &CBoard::set_width, DEFVAL(3));
     ClassDB::bind_method(D_METHOD("get_width"), &CBoard::get_width);

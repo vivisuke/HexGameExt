@@ -8,6 +8,7 @@
 #endif
 
 #include <godot_cpp/classes/ref.hpp>
+#include <godot_cpp/variant/string.hpp>
 #include <vector>
 
 typedef unsigned char uchar;
@@ -238,6 +239,7 @@ public:
 	}
 	int sel_move_random() const;
 	uchar rollout(int x, int y, uchar col) const;		//	初手：(x, y, col)、ランダムゲーム、勝色を返す
+	uchar rollout(int ix, uchar col) const;				//	初手：(x, y, col)、ランダムゲーム、勝色を返す
     int sel_move_PMC(uchar) const;				//	勝率による純粋モンテカルロ法 着手選択
     int sel_move_MCTS(uchar) const;				//	モンテカルロ木探索 着手選択
 	
@@ -310,6 +312,8 @@ public:
     CBoard();
     CBoard(const CBoard&);
     ~CBoard();
+
+    String	test_str() const;
 
     void	init();
     void	set_width(int width);

@@ -10,6 +10,7 @@
 #pragma once
 
 #include <vector>
+#include <string>
 #include <limits>
 #include <math.h>
 #include "cboard.h"
@@ -63,8 +64,31 @@ public:
 	{
 	}
 public:
+	void print_node(const MCTSNode& node, int depth = 0) const {
+		std::string s(depth*2, ' ');
+		char buf[256];
+		sprintf(buf, "%s%d/%d", &s[0], node.m_wins, node.m_visits);
+		UtilityFunctions::print(buf);
+		for(int i = 0; i != node.m_children.size(); ++i)
+			print_node(node.m_children[i], depth+1);
+	}
+	//void print_tree() const {
+	//	print_node(&m_root);
+	//}
+	void backpropagation(MCTSNode* node, uchar col) {
+		for(;;) {
+			node->m_visits += 1;
+			if( node->m_col == col )
+				node->m_wins += 1;
+			node = m_node_list.back();
+			m_node_list.pop_back();
+			if( node == &m_root ) break;
+			col = (BLACK + WHITE) - col;
+		}
+		node->m_visits += 1;
+	}
 	void expand(MCTSNode *node, CBoardBasic& bd, uchar col) {
-		node->m_children.reize(bd.get_n_empty());
+		node->m_children.resize(bd.get_n_empty());
 		int ix = bd.xyToIndex(0, 0);
 		for(int i = 0; i != bd.get_n_empty(); ++i) {
 			while( bd.get_ix_color(ix) != EMPTY ) ++ix;
@@ -73,9 +97,19 @@ public:
 		}
 	}
 	int	search(CBoardBasic& bd, uchar col, int n_itr) {
+		m_root.m_col = col;
 		for(int i = 0; i != n_itr; ++i) {
-			MCTSNode *node = m_root;
+			m_node_list.clear();
+			MCTSNode *node = &m_root;
+			if( node->m_children.empty() ) {
+				m_node_list.push_back(node);
+				expand(node, bd, col);
+			}
+			node = node->select_child_ucb();
+			uchar winc = bd.rollout(node->m_ix, node->m_col);
+			backpropagation(node, winc);
 		}
+		print_node(m_root);
 		return 0;
 	}
 

@@ -15,6 +15,7 @@ var move_hist : PackedVector3Array = []		# 着手履歴 for Undo、要素：(x, 
 func _ready() -> void:
 	bd = CBoard.new()
 	bd.set_width(BD_WIDTH)
+	print(bd.test_str())
 	$BoardRect.bd = bd
 	$BoardRect.set_width(BD_WIDTH)
 	#var f : bool = bd.put_color(0, 0, 1)
@@ -114,8 +115,8 @@ func _on_next_button_pressed() -> void:
 	var ix
 	if next == BLACK:
 		#ix = bd.sel_move_random()
-		ix = bd.sel_move_PMC(next)
-		#pos = bd.sel_move_MCTS(next)
+		#ix = bd.sel_move_PMC(next)
+		ix = bd.sel_move_MCTS(next)
 	else:
 		#ix = bd.sel_move_random()
 		ix = bd.sel_move_PMC(next)

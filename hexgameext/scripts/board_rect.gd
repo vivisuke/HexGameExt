@@ -96,7 +96,7 @@ func _draw():
 				draw_stone(x, y, col == Board.BLUE)
 	# 着手箇所強調
 	const R = 6
-	if put_pos.x >= 0:
+	if put_pos.x >= 0 && put_pos.y >= 0:
 		var p = vec2ToPos(put_pos)
 		#draw_rect(Rect2(p-Vector2(R, R), Vector2(2*R, 2*R)), Color.GREEN)
 		#var col = Color.BLACK if bd.get_color(put_pos.x, put_pos.y) == 2 else Color.WHITE
